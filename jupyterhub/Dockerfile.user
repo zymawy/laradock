@@ -2,14 +2,28 @@ FROM tensorflow/tensorflow:latest-gpu
 
 MAINTAINER ahkui <ahkui@outlook.com>
 
+ RUN set -uex \
+        && apt-get update \
+        && apt-get install -y ca-certificates curl gnupg \
+        && mkdir -p /etc/apt/keyrings \
+        && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
+         | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
+        && NODE_MAJOR=18 \
+        && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" \
+         | sudo tee /etc/apt/sources.list.d/nodesource.list \
+        && apt-get update \
+        && apt-get install nodejs -y;
+
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        python \
-        python-dev \
+        python3 \
+        python3-dev \
         && \
     apt-get autoremove -y && \
     apt-get autoclean && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         wget \
@@ -24,6 +38,7 @@ RUN curl -O https://bootstrap.pypa.io/get-pip.py && \
     python3 get-pip.py && \
     rm get-pip.py
 
+
 RUN python3 -m pip --quiet --no-cache-dir install \
         Pillow \
         h5py \
@@ -35,19 +50,17 @@ RUN python3 -m pip --quiet --no-cache-dir install \
         numpy \
         pandas \
         scipy \
-        sklearn \
-        Flask \
+        scikit-learn \
         gunicorn \
         pymongo \
         redis \
         requests \
         ipyparallel \
         bs4 \
+        tensorflow \
         && \
     python3 -m ipykernel.kernelspec
 
-RUN pip --no-cache-dir install \
-    https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.8.0-cp35-cp35m-linux_x86_64.whl
 
 RUN ln -s -f /usr/bin/python3 /usr/bin/python
 

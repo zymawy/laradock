@@ -1,0 +1,12 @@
+{
+  "token_hmac_secret_key": "46b38493-147e-4e3f-86e0-dc5ec54f5133",
+  "api_key": "abaf408f-b5f8-4b14-bf66-h4c03a1exag9",
+  "admin_password": "password",
+  "admin_secret": "secret",
+  "admin": true,
+  "allowed_origins": [
+    "http://localhost:3000",
+    "https://hot.salla.test",
+    "http://localhost:63342"
+  ]
+}

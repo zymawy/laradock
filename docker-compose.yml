@@ -1085,6 +1085,7 @@ services:
 
 ### Kibana ##############################################
     kibana:
+      platform: linux/x86_64
       build:
         context: ./kibana
         args:
@@ -2100,3 +2101,31 @@ services:
         - frontend
         - backend
       restart: always
+
+    centrifugo:
+      build: ./centrifugo
+      volumes:
+        - "${DATA_PATH_HOST}/centrifugo:/centrifugo/config.json"
+#      command: centrifugo -c config.json
+      ports:
+        - 8000:8000
+      ulimits:
+        nofile:
+          soft: 65535
+          hard: 65535
+
+    mjml:
+      build: ./mjml
+      volumes:
+        - ${DATA_PATH_HOST}/mjml:/root
+      ports:
+        - 15500:15500
+      # environment:
+      # to change the port:
+      #   - PORT=8080
+      # for development, uncomment the following lines:
+      #   - CORS=*
+      #   - MJML_KEEP_COMMENTS=true
+      #   - MJML_VALIDATION_LEVEL=strict
+      #   - MJML_MINIFY=false
+      #   - MJML_BEAUTIFY=true
