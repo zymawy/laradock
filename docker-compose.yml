@@ -692,9 +692,9 @@ services:
       build: ./mongo
       ports:
         - "${MONGODB_PORT}:27017"
-      environment:
-        - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
-        - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+#      environment:
+##        - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+##        - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
       volumes:
         - ${DATA_PATH_HOST}/mongo:/data/db
         - ${DATA_PATH_HOST}/mongo_config:/data/configdb
@@ -747,7 +747,6 @@ services:
       build: ./redis
       volumes:
         - ${DATA_PATH_HOST}/redis:/data
-      command: --requirepass ${REDIS_PASSWORD}
       ports:
         - "${REDIS_PORT}:6379"
       networks:
@@ -1269,6 +1268,8 @@ services:
       user: graylog
       volumes:
         - ${DATA_PATH_HOST}/graylog:/usr/share/graylog/data
+        - ./graylog/config/graylog.conf:/usr/share/graylog/data/config/graylog.conf
+        - ./graylog/config/log4j2.xml:/usr/share/graylog/data/config/log4j2.xml
       networks:
         - backend
 
